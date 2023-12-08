@@ -3,6 +3,7 @@
         "stm32f10x.h": "c",
         "ad.h": "c",
         "stm32_dsp.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "stddef.h": "c"
     }
 }

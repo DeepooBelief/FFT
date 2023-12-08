@@ -3,7 +3,12 @@
 #include "codetab.h"
 #include "Delay.h"
 
-//初始化硬件IIC引脚
+// 初始化硬件IIC引脚
+// SCL ---> PB6
+// SDA ---> PB7
+// PB4和PB5是被配置成了输出模式,用来给OLED供电的
+// 如果PB6和PB7不是IIC功能的话,需要自己修改一下
+// 如果你使用的是STM32F103C8T6开发板和4线IIC OLED的话,可以把OLED直接插在开发板的PB4,PB5,PB6,PB7上
 void I2C_Configuration(void)
 {
 		GPIO_InitTypeDef GPIO_InitStructure;

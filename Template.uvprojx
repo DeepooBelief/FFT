@@ -750,6 +750,11 @@
               <FileType>5</FileType>
               <FilePath>.\DSP\table_fft.h</FilePath>
             </File>
+            <File>
+              <FileName>cr4_fft_1024_stm32.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\DSP\cr4_fft_1024_stm32.s</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
