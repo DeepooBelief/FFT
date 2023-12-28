@@ -18,5 +18,7 @@ void OLED_ShowStr(unsigned char x,unsigned char y,unsigned char ch[],unsigned ch
 void OLED_ShowBMP(unsigned char x0,unsigned char y0,unsigned char x1,unsigned char y1,unsigned char BMP[]);
 void OLED_WriteData(uint8_t *Data, uint8_t N);
 void OLED_WriteData_Repeat(uint8_t Data, uint8_t N);
+void I2C_DMA_Transmit_InitConfig(uint32_t N, uint32_t Address);
+void OLED_WriteData_DMA(uint8_t *Data, uint8_t N);
 #endif
 

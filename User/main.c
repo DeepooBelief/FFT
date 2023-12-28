@@ -7,9 +7,10 @@
 #include "math.h"
 #include "oled.h"
 
+/*通过修改AD.h里的NPT为256或1024，可指定FFT的点数*/
 
 uint32_t lBufOutArray[NPT]; /* FFT 运算的输出数组 */
-
+uint8_t OLED_DisplayBuf[129] = {0x40}; // OLED显示缓冲区，第一个字节是0x40,表示寄存器地址，后面128个字节是数据
 char code(int x)
 {
 	return (char)(0xFF << (8 - x));
@@ -44,6 +45,7 @@ void TIM1_UP_IRQHandler(void)
 	{
 		fps = fpsCount;
 		fpsCount = 0;
+		printf("FPS: %d\r\n", fps);
 		TIM_ClearITPendingBit(TIM1, TIM_IT_Update);
 	}
 }
@@ -57,11 +59,13 @@ int main(void)
 	GPIO_Struct.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOC, &GPIO_Struct); //点亮PC13，表示程序开始运行
 	SerialBegin(); //初始化串口
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+	I2C_DMA_Transmit_InitConfig(129, (uint32_t)OLED_DisplayBuf); //初始化DMA
 	I2C_Configuration(); //初始化I2C
 	OLED_Init(); //初始化OLED
 	OLED_Fill(0x00); //清屏
 
-	NVIC_Configuration(); //初始化DMA中断
+	ADC_DMA_Init(); //初始化ADC的DMA中断
 	AD_Init(); //初始化ADC
 	Timer1_Init(); //初始化定时器1
 	TIM3_init(1632, 0); // 44.1kHz ADC sample rate, 72M / 1633
@@ -101,7 +105,6 @@ int main(void)
 			{
 				OLED_SetPos(0, j);
 				char data;
-				uint8_t OLED_DisplayBuf[128] = {0};
 				for (i = 0; i < 63; i++)
 				{
 					if (magnitude[i] > 0)
@@ -119,13 +122,12 @@ int main(void)
 					}else{
 						data = 0x00;
 					}
-					OLED_DisplayBuf[2*i] = data;
 					OLED_DisplayBuf[2*i+1] = data;
+					OLED_DisplayBuf[2*i+2] = data;
 				}
-				OLED_WriteData(OLED_DisplayBuf, 128);
+				OLED_WriteData_DMA(OLED_DisplayBuf, 129);
 			}
 			fpsCount++;
-			printf("FPS: %d\r\n", fps);
 		}
 	}
 }

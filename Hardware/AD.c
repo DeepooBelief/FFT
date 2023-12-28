@@ -20,7 +20,7 @@ void resetTrigger(){ // 用于清除触发标志
 }
 
 // DMA中断优先级设置
-void NVIC_Configuration(void){
+void ADC_DMA_Init(void){
     NVIC_InitTypeDef NVIC_InitStructure;
     NVIC_InitStructure.NVIC_IRQChannel = DMA1_Channel1_IRQn;
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
@@ -31,7 +31,6 @@ void NVIC_Configuration(void){
 
 void AD_Init(){
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1 | RCC_APB2Periph_GPIOA, ENABLE);
-    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
     RCC_ADCCLKConfig(RCC_PCLK2_Div6); // 72/6 = 12MHz
 
     //配置ADC1的通道1为239.5个采样周期, 12MHz / 239.5 = 50.125KHz，大于定时器的44.1KHz

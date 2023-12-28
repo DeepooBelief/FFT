@@ -9,7 +9,7 @@ uint32_t* getAD_Value_buf(void);
 void AD_Init(void);
 uint16_t AD_Read(void);
 void TIM3_init(u16 arr,u16 psc);
-void NVIC_Configuration(void);
+void ADC_DMA_Init(void);
 uint8_t getTrigger(void);
 void resetTrigger(void);
 
